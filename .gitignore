@@ -1,0 +1,79 @@
+# -------------------------------
+# Environment & Config Files
+# -------------------------------
+.env
+*.env
+.env.*
+!*.env.example       # keep example envs for documentation
+
+# -------------------------------
+# Python Bytecode / Caches
+# -------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.db
+
+# -------------------------------
+# Virtual Environments
+# -------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# -------------------------------
+# Build / Packaging / Logs
+# -------------------------------
+build/
+dist/
+*.egg-info/
+*.log
+logs/
+tmp/
+.DS_Store
+
+# -------------------------------
+# Streamlit Cache / Metadata
+# -------------------------------
+.streamlit/
+frontend/.streamlit/
+frontend/__pycache__/
+.streamlit/secrets.toml
+
+# -------------------------------
+# AWS / Deployment Artifacts
+# -------------------------------
+*.zip               # deployment packages
+*.tar.gz
+*.aws-sam
+.aws-sam/
+.aws/
+__pycache__/
+
+# -------------------------------
+# Testing / Dev Utilities
+# -------------------------------
+.test_scripts/
+tests/
+notebooks/
+*.ipynb_checkpoints/
+
+# -------------------------------
+# IDE / OS
+# -------------------------------
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# -------------------------------
+# Project-Specific
+# -------------------------------
+app.py              # optional: ignore local dev app
+frontend/__pycache__/
+lambda_frontend/__pycache__/
+backend/__pycache__/
+src/__pycache__/

@@ -1,0 +1,8 @@
+streamlit
+requests
+python-dotenv
+watchdog
+audio-recorder-streamlit
+websocket-client
+boto3
+amazon-transcribe
