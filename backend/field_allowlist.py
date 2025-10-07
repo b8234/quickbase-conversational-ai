@@ -15,7 +15,7 @@
 
 ALLOW_LISTS = {
     "Customers": {
-        "id": "bvgrzefdx",
+        "id": "your-table-id",
         "fields": [
             "Record ID# [KEY]",
             "Customer Name [UNIQUE]",
@@ -27,7 +27,7 @@ ALLOW_LISTS = {
         ]
     },
     "Customer Support Tickets": {
-        "id": "bvgrzefb3",
+        "id": "your-table-id",
         "fields": [
             "Record ID# [KEY]",
             "Ticket Id [UNIQUE]",
