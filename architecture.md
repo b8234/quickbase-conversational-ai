@@ -1,7 +1,7 @@
 ## System Architecture Diagram
 
-```text
-flowchart TD
+
+**Flowchart TD**
     A[User (Streamlit Frontend)] -->|Text/Voice Input| B[Lambda Frontend]
     B -->|Transcribe Audio| C[Amazon Transcribe]
     B -->|Invoke Agent| D[Amazon Bedrock Agent]
@@ -13,7 +13,7 @@ flowchart TD
     D -->|Reply, URLs| B
     D -->|Direct Response| A
     B -->|Reply, URLs| A
-```
+
 
 **Legend:**
 - **A:** User interacts via Streamlit UI.
