@@ -1,6 +1,6 @@
 ## System Architecture Diagram
 
-```mermaid
+```text
 flowchart TD
     A[User (Streamlit Frontend)] -->|Text/Voice Input| B[Lambda Frontend]
     B -->|Transcribe Audio| C[Amazon Transcribe]
