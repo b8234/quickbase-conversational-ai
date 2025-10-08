@@ -1,0 +1,29 @@
+{
+  "responses": [
+    {
+      "keywords": ["support tickets", "customer support", "tickets", "help desk", "support"],
+      "response": "*Support Ticket Analysis:*\n\n• Total support tickets: 12\n• Status: 4 Resolved, 5 In Progress, 3 Open\n• Priority: 3 Critical, 5 High, 4 Medium\n• Issue Type: 5 Authentication Errors, 4 API Integration Problems, 3 Data Sync Issues\n\nCritical situation detected with 12 active tickets, predominantly authentication issues (42% of tickets). 67% of tickets are either High or Critical priority, with only 33% resolved, indicating urgent attention needed. Average Response Time: 3.2 hours, Oldest Open Ticket: 5 days.\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    },
+    {
+      "keywords": ["customers", "customer records", "find customer", "recent customers", "client", "show customers"],
+      "response": "*Customer Records Analysis:*\n\n• Total customers: 342\n• New (Last 7 Days): 12\n• Segment: 45 Enterprise, 156 Mid-Market, 141 Small Business\n• Health: 289 Healthy, 38 At Risk, 15 Churning\n• Geography: 198 North America, 89 Europe, 42 Asia-Pacific\n\n342 active customers with 12 new additions in the past week (+3.5% growth). Recent additions include TechVision Solutions (\\$85K/yr), Global Manufacturing Co (\\$125K/yr), and HealthFirst Clinics (\\$45K/yr). Revenue generated this week: \\$487,500. 85% of customer base is healthy, though 38 customers (11%) show at-risk indicators requiring attention.\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    },
+    {
+      "keywords": ["open tasks", "pending tasks", "tasks", "show tasks", "list tasks"],
+      "response": "*Open Tasks Summary:*\n\n• Total tasks: 47\n• Priority: 8 Critical, 19 High, 14 Medium, 6 Low\n• Status: 23 In Progress, 18 Not Started, 6 Blocked\n• Department: 18 Development, 11 Marketing, 8 Sales, 7 Support, 3 Admin\n\n47 tasks across all teams with 57% either Critical or High priority. 6 tasks currently blocked and need resolution. Development department has highest workload with 18 tasks. Team Capacity: 78% utilized, Average Task Age: 4.2 days.\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    },
+    {
+      "keywords": ["projects and tasks", "project tasks", "project management", "projects with tasks"],
+      "response": "*Projects & Tasks Hierarchy:*\n\n• Active projects: 11\n• Total tasks: 287\n• Team members: 45\n• Task completion: 58% overall, 23 critical tasks\n\n11 active projects with 287 tasks tracked. Cloud Migration Initiative: 75% complete, \\$187.5K spent, 42 tasks (28 completed). Mobile App v3.0: 45% complete, \\$81K spent, 56 tasks (18 completed). Critical task: Payment integration due Oct 11. Workload: Development (142 tasks), Design (56 tasks), QA (45 tasks).\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    },
+    {
+      "keywords": ["customers and invoices", "customer invoices", "invoices by customer", "customer payments"],
+      "response": "*Customers & Invoices Analysis:*\n\n• Total customers: 342\n• Total invoices: 156\n• Outstanding balance: \\$487,250\n• Invoice status: 98 Paid in Full, 34 Partially Paid, 18 Overdue, 6 Pending\n\n342 customers with 156 invoices tracked across relationships. 63% fully paid, but 18 invoices (11%) are overdue totaling \\$142,750 requiring follow-up. TechVision Solutions has 3 invoices (2 paid, 1 outstanding \\$11,400). Global Manufacturing Co has 5 invoices (all paid, avg 2 days early). Top customers: Enterprise accounts represent 67% of outstanding AR.\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    },
+    {
+      "keywords": ["orders and items", "order items", "sales orders", "orders with line items"],
+      "response": "*Sales Orders & Line Items Analysis:*\n\n• Total orders: 234\n• Line items: 1,847\n• Total value: \\$2,847,500\n• Status: 156 Completed, 45 Shipped, 23 Processing, 10 Pending\n\n234 orders containing 1,847 line items worth \\$2.8M. 67% completed successfully. 10 pending orders totaling \\$87,250 awaiting approval. Recent: TechVision Solutions order for \\$45,750 with 5 line items (Enterprise License, Premium Support). Global Manufacturing Co order shipped - \\$128,900 with 8 line items. Average order value: \\$12,169. Top sellers: Enterprise License (423 units), Premium Support (234 contracts).\n\nReview the attached report for complete details.\n\n**Data Exports:**\n- [CSV Format](#)"
+    }
+  ],
+  "default_response": "*Demo Mode Response:*\n\nI received your query, but I don't have a specific mock response for it yet.\n\nIn live mode, this would be processed by Amazon Bedrock and return real data from your Quickbase application.\n\n**Your query:** {query}\n\n_Tip: Try these sample queries:_\n\n**Single Table:**\n- \"Show me support tickets\"\n- \"List customer records\"\n- \"What are the open tasks?\"\n\n**Parent-Child Relationships:**\n- \"Show projects and tasks\"\n- \"Get customers and invoices\"\n- \"Display orders and items\""
+}

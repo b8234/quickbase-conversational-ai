@@ -1,5 +1,5 @@
 import streamlit as st
-import json, requests, uuid, os, base64
+import json, requests, uuid, os, base64, time, random
 from dotenv import load_dotenv
 from audio_recorder_streamlit import audio_recorder  # pip install audio-recorder-streamlit
 
@@ -8,6 +8,30 @@ load_dotenv()
 API_URL = os.getenv("API_URL")
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
 DEMO_KEY = os.getenv("DEMO_KEY")
+
+# ---------- Load Demo Responses ----------
+def load_demo_responses():
+    """Load mock responses from JSON file for demo mode"""
+    try:
+        with open('demo_responses.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"responses": [], "default_response": "💬 Demo Mode: This is a simulated response for demonstration."}
+
+def get_demo_response(query):
+    """Get appropriate demo response based on query keywords"""
+    demo_data = load_demo_responses()
+    query_lower = query.lower()
+    
+    # Search for matching keywords
+    for response_item in demo_data.get("responses", []):
+        keywords = response_item.get("keywords", [])
+        if any(keyword in query_lower for keyword in keywords):
+            return response_item.get("response")
+    
+    # Return default response if no match found
+    default = demo_data.get("default_response", "💬 Demo Mode: This is a simulated response for demonstration.")
+    return default.replace("{query}", query)
 
 st.set_page_config(
     page_title="Quickbase Conversational AI powered by Amazon Bedrock",
@@ -89,6 +113,10 @@ st.markdown("""
 <div class="app-subtitle">A modern conversational interface for your Bedrock Agent.</div>
 """, unsafe_allow_html=True)
 
+# ---------- Demo Mode Banner ----------
+if DEMO_MODE:
+    st.info("🧪 **Demo Mode Active** — You are viewing simulated responses with sample data. Connect to AWS to see real Quickbase data.", icon="ℹ️")
+
 # ---------- Display Chat ----------
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -102,7 +130,26 @@ if st.session_state.voice_mode:
             st.info("Processing your voice input...")
             try:
                 if DEMO_MODE:
-                    data = {"reply": "🧠 Demo Mode: Pretending to process your voice input."}
+                    # Simulate thinking time (3-4 seconds)
+                    time.sleep(random.uniform(3.0, 4.0))
+                    
+                    # Simulate transcription with a random demo query
+                    demo_queries = [
+                        "Show me support tickets",
+                        "List customer records", 
+                        "What are the open tasks?",
+                        "Show projects and tasks",
+                        "Get customers and invoices",
+                        "Display orders and items"
+                    ]
+                    transcribed_text = random.choice(demo_queries)
+                    
+                    # Use smart demo response matching (same as text mode)
+                    demo_response = get_demo_response(transcribed_text)
+                    
+                    data = {
+                        "reply": f"🎙️ **Voice Input Processed**\n\n_Transcribed:_ \"{transcribed_text}\"\n\n---\n\n{demo_response}"
+                    }
                 else:
                     encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
@@ -147,7 +194,11 @@ else:
 
             try:
                 if DEMO_MODE:
-                    data = {"reply": "💬 Demo Mode: This is a simulated response for demonstration."}
+                    # Simulate thinking time (3-4 seconds)
+                    time.sleep(random.uniform(3.0, 4.0))
+                    # Use smart demo response matching
+                    reply = get_demo_response(prompt)
+                    data = {"reply": reply}
                 else:
                     headers = {}
                     if DEMO_KEY:
