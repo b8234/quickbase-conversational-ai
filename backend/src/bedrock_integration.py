@@ -65,11 +65,15 @@ def validate_and_match_tables(suggested_tables: List[str], app_id: str) -> Dict[
             if not matched_entry:
                 available = list(ALLOW_LISTS.keys())
                 print(f"WARNING: Table '{suggested}' not found in ALLOW_LISTS")
+                
+                # Create a formatted list of available tables
+                table_list = "\n".join([f"- {table}" for table in available])
+                
                 return {
                     "needs_clarification": True,
                     "error": f"Table '{suggested}' not found in ALLOW_LISTS",
                     "available_tables": available,
-                    "suggestion": f"Available tables: {', '.join(available[:5])}"
+                    "suggestion": f"Table '{suggested}' is not available. Please specify one of these tables:\n\n{table_list}"
                 }
     mode = "parent+child" if len(matched) == 2 else "single"
     return {"ok": True, "tables": matched, "mode": mode}
