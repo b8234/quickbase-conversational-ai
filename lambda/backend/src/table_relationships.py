@@ -1,10 +1,12 @@
-import json, time
+import json, time, logging
 from typing import Dict, Any, List, Optional
 
 from src.config import cloudwatch
 from src.quickbase_api import quickbase_get, load_field_map
 from src.cache_utils import _relationship_cache, _is_cache_valid, _table_metadata_cache
 from src.config import ALLOW_LISTS
+
+logger = logging.getLogger("quickbase-agent")
 
 def send_cloudwatch_metrics(metric_data: List[Dict[str, Any]]) -> None:
     """Send metrics to CloudWatch."""
@@ -14,7 +16,7 @@ def send_cloudwatch_metrics(metric_data: List[Dict[str, Any]]) -> None:
             MetricData=metric_data
         )
     except Exception as e:
-        print(f"WARNING: Failed to send CloudWatch metrics: {e}")
+        logger.warning(f"Failed to send CloudWatch metrics: {e}")
 
 def get_table_metadata(table_id: str, app_id: Optional[str] = None) -> Dict[str, Any]:
     """
@@ -22,10 +24,10 @@ def get_table_metadata(table_id: str, app_id: Optional[str] = None) -> Dict[str,
     """
     entry = _table_metadata_cache.get(table_id)
     if _is_cache_valid(entry):
-        print(f"INFO: Using cached metadata for table {table_id}")
+        logger.info(f"Using cached metadata for table {table_id}")
         return entry["data"]
     elif entry:
-        print(f"INFO: Cache expired for table {table_id}, refreshing...")
+        logger.info(f"Cache expired for table {table_id}, refreshing...")
     url = f"https://api.quickbase.com/v1/tables/{table_id}"
     if app_id:
         url += f"?appId={app_id}"
@@ -33,7 +35,7 @@ def get_table_metadata(table_id: str, app_id: Optional[str] = None) -> Dict[str,
     if not isinstance(table_info, dict):
         raise ValueError(f"Unexpected response type for table {table_id}: {type(table_info).__name__}")
     _table_metadata_cache[table_id] = {"timestamp": time.time(), "data": table_info}
-    print(f"INFO: Cached table metadata for '{table_info.get('name')}' ({table_info.get('id')})")
+    logger.info(f"Cached table metadata for '{table_info.get('name')}' ({table_info.get('id')})")
     return table_info
 
 def list_relationships(table_id: str) -> List[Dict[str, Any]]:
@@ -43,18 +45,18 @@ def list_relationships(table_id: str) -> List[Dict[str, Any]]:
     """
     entry = _relationship_cache.get(table_id)
     if _is_cache_valid(entry):
-        print(f"INFO: Using cached relationships for table {table_id}")
+        logger.info(f"Using cached relationships for table {table_id}")
         return entry["data"]
     elif entry:
-        print(f"INFO: Relationship cache expired for table {table_id}, refreshing...")
+        logger.info(f"Relationship cache expired for table {table_id}, refreshing...")
     url = f"https://api.quickbase.com/v1/tables/{table_id}/relationships"
     rels_data = quickbase_get(url)
     rels = rels_data.get("relationships", []) if isinstance(rels_data, dict) else []
     if not rels:
-        print(f"WARNING: No relationships found for table {table_id}")
+        logger.warning(f"No relationships found for table {table_id}")
         _relationship_cache[table_id] = {"timestamp": time.time(), "data": []}
         return []
-    print(f"INFO: Found {len(rels)} relationship(s) for table {table_id}")
+    logger.info(f"Found {len(rels)} relationship(s) for table {table_id}")
     for r in rels:
         parent_id = r.get("parentTableId")
         child_id = r.get("childTableId")

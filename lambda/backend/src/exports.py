@@ -1,8 +1,10 @@
-import io, csv
+import io, csv, logging
 from typing import Any, Optional, Dict, List
 
 from src.config import s3, S3_BUCKET, PRESIGNED_URL_EXPIRATION
 from datetime import datetime
+
+logger = logging.getLogger("quickbase-agent")
 
 def save_to_s3(
     data: Any,
@@ -24,7 +26,7 @@ def save_to_s3(
     writer.writeheader()
     writer.writerows(data)
     body = output.getvalue()
-    print(f"Uploading CSV: {len(body.encode('utf-8'))/1000:.1f}KB → s3://{S3_BUCKET}/{key}")
+    logger.info(f"Uploading CSV: {len(body.encode('utf-8'))/1000:.1f}KB → s3://{S3_BUCKET}/{key}")
     s3.put_object(Bucket=S3_BUCKET, Key=key, Body=body, ContentType="text/csv")
     return s3.generate_presigned_url(
         "get_object",
@@ -49,10 +51,10 @@ def save_all_formats(
             data = [data]
         if not isinstance(data, list) or not data or not isinstance(data[0], dict):
             raise ValueError("CSV export expects list of dicts")
-        print(f"Saving {len(data)} record(s) to CSV for '{rec_name}'...")
+        logger.info(f"Saving {len(data)} record(s) to CSV for '{rec_name}'...")
         urls["csv"] = save_to_s3(data, prefix="reports", record_name=rec_name)
-        print(f"SUCCESS: Saved CSV → {urls['csv']}")
+        logger.info(f"SUCCESS: Saved CSV → {urls['csv']}")
     except Exception as e:
-        print(f"ERROR: Failed to save CSV for {rec_name}: {e}")
-        import traceback; traceback.print_exc()
+        logger.error(f"ERROR: Failed to save CSV for {rec_name}: {e}")
+        import traceback; logger.error(traceback.format_exc())
     return urls

@@ -23,10 +23,25 @@ This project enables conversational access to Quickbase data using natural langu
 
 ## Project Structure
 
-- `frontend/` — Streamlit UI for user interaction
-- `lambda_frontend/` — AWS Lambda handler for Bedrock agent and audio transcription
-- `backend/` — Python modules for Quickbase API, data retrieval, formatting, exports, and Slack
-- `backend/field_allowlist.py` — Configure which Quickbase tables and fields are accessible
+- `streamlit/` — Streamlit UI for user interaction
+- `lambda/` — AWS Lambda functions
+  - `lambda/frontend/` — Lambda handler for Bedrock agent and audio transcription
+  - `lambda/backend/` — Lambda handler for Quickbase API, data retrieval, formatting, exports, and Slack
+    - `src/` — Backend modules for Quickbase, formatting, exports, Slack, etc.
+    - `field_allowlist.py` — Configure which Quickbase tables and fields are accessible
+- `example.env` — Template for environment variables (copy to `.env` and configure)
+- `docs/` — Documentation
+- `architecture.md` — System diagram and design overview
+
+## Testing
+
+Test scaffolding is provided in:
+
+- `lambda/backend/tests/` — For backend unit and integration tests (add your own test files)
+- `frontend/tests/` — For frontend/Streamlit tests (add your own test files)
+
+Currently, only sample data and README files are present; you should add test scripts for automated validation.
+
 - `example.env` — Template for environment variables (copy to `.env` and configure)
 - `docs/` — Documentation
 - `architecture.md` — System diagram and design overview
@@ -49,7 +64,6 @@ This project requires configuration before use:
 3. **Demo Mode**: Set `DEMO_MODE=true` in `.env` to test the frontend without AWS costs
 
 See `architecture.md` for detailed component descriptions.
-
 
 ## Requirements
 

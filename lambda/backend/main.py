@@ -1,6 +1,13 @@
-import os, json, time, traceback
+import os, json, time, traceback, logging
 from datetime import datetime
 from typing import Any, Dict
+
+# Setup structured logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s %(message)s'
+)
+logger = logging.getLogger("quickbase-agent")
 
 from src.config import *
 from src.cache_utils import clear_all_caches, get_cache_stats
@@ -20,22 +27,50 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     def log_action(service, action):
         actions.append({"service": service, "action": action})
     try:
-        print(f"Received event: {json.dumps(event, default=str)}")
+        logger.info(json.dumps({
+            "event": event,
+            "message": "Received event"
+        }, default=str))
         function_name = event.get('function', 'query_simple')
         params = extract_bedrock_parameters(event)
-        print(f"Function: {function_name}")
-        print(f"Extracted parameters:")
-        print(f"  - Prompt: '{params.get('prompt')}'")
-        print(f"  - Table Names: {params.get('table_names')}")
+        logger.info(json.dumps({
+            "function": function_name,
+            "params": {
+                "prompt": params.get('prompt'),
+                "table_names": params.get('table_names'),
+                "entity_names": params.get('entity_names'),
+                "limit": params.get('limit', 50),
+                "date_filter_value": params.get('date_filter_value'),
+                "date_filter_unit": params.get('date_filter_unit'),
+                "sort_field": params.get('sort_field'),
+                "sort_order": params.get('sort_order', 'DESC')
+            },
+            "message": "Extracted parameters"
+        }, default=str))
+        # Additional logging for specific parameters if needed
         if function_name == 'query_simple':
             if params.get('entity_names'):
-                print(f"  - Entity Names: {params['entity_names']}")
-            print(f"  - Limit: {params.get('limit', 50)}")
+                logger.info(json.dumps({
+                    "entity_names": params['entity_names'],
+                    "message": "Entity Names"
+                }))
+            logger.info(json.dumps({
+                "limit": params.get('limit', 50),
+                "message": "Limit"
+            }))
         elif function_name == 'query_advanced':
             if params.get('date_filter_value') and params.get('date_filter_unit'):
-                print(f"  - Date Filter: {params['date_filter_value']} {params['date_filter_unit']}")
+                logger.info(json.dumps({
+                    "date_filter_value": params['date_filter_value'],
+                    "date_filter_unit": params['date_filter_unit'],
+                    "message": "Date Filter"
+                }))
             if params.get('sort_field'):
-                print(f"  - Sort: {params['sort_field']} ({params.get('sort_order', 'DESC')})")
+                logger.info(json.dumps({
+                    "sort_field": params['sort_field'],
+                    "sort_order": params.get('sort_order', 'DESC'),
+                    "message": "Sort Field"
+                }))
         if not params.get('prompt'):
             raise ValueError("Missing required parameter: prompt")
         if not params.get('table_names'):
@@ -43,7 +78,10 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         validation = validate_and_match_tables(params['table_names'], QB_APP_ID)
         if validation.get('needs_clarification'):
             elapsed = time.time() - start_time
-            print(f"INFO: Table validation failed - {elapsed:.2f}s")
+            logger.warning(json.dumps({
+                "message": "Table validation failed",
+                "elapsed": elapsed
+            }))
             return format_bedrock_response(event, {
                 "ok": False,
                 "needs_clarification": True,
@@ -65,7 +103,11 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             "sort_by": params.get('sort_field'),
             "sort_order": params.get('sort_order', 'DESC')
         }
-        print(f"DEBUG: mode={parsed['mode']}, tables={[t['name'] for t in parsed['tables']]}")
+        logger.debug(json.dumps({
+            "mode": parsed['mode'],
+            "tables": [t['name'] for t in parsed['tables']],
+            "message": "Parsed mode and tables"
+        }))
         results = []
         # Log Quickbase query action
         log_action("Quickbase", f"Queried tables: {[t['name'] for t in parsed['tables']]}")
@@ -79,12 +121,16 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             log_action("S3", "Stored CSV report and generated presigned URL")
         elapsed = time.time() - start_time
         cache_stats = get_cache_stats()
-        print(
-            f"SUCCESS: {len(results)} reports in {elapsed:.2f}s | "
-            f"Caches -> tables: {cache_stats.get('cached_tables')}, "
-            f"relationships: {cache_stats.get('cached_relationships')}, "
-            f"metadata: {cache_stats.get('cached_metadata')}"
-        )
+        logger.info(json.dumps({
+            "actions": actions,
+            "message": "Action log"
+        }))
+        logger.info(json.dumps({
+            "result_count": len(results),
+            "elapsed": elapsed,
+            "cache_stats": cache_stats,
+            "message": "Report generation summary"
+        }))
         send_cloudwatch_metrics([
             {'MetricName': 'ReportsGenerated', 'Value': len(results), 'Unit': 'Count', 'Timestamp': datetime.utcnow()},
             {'MetricName': 'ExecutionTime', 'Value': elapsed, 'Unit': 'Seconds', 'Timestamp': datetime.utcnow()},
@@ -98,6 +144,10 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         })
     except Exception as e:
         elapsed = time.time() - start_time
-        print(f"ERROR after {elapsed:.2f}s: {str(e)}")
-        print(traceback.print_exc())
+        logger.error(json.dumps({
+            "error": str(e),
+            "elapsed": elapsed,
+            "trace": traceback.format_exc(),
+            "message": "Exception occurred"
+        }))
         return format_bedrock_response(event, {"ok": False, "error": str(e)})

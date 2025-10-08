@@ -13,20 +13,20 @@
 
 ## Demo Mode
 
-### Configuration
+### Configuration True
 
 ```env
 DEMO_MODE=true
 ```
 
-### Purpose
+### Purpose (Demo Mode)
 
 - Explore the UI without AWS infrastructure
 - Test frontend changes safely
 - Present the interface without sensitive data
 - Allow contributors to develop without credentials
 
-### What Works
+### What Works (Demo Mode)
 
 - Complete Streamlit interface
 - All UI components and layouts
@@ -41,16 +41,16 @@ DEMO_MODE=true
 - Voice transcription
 - Backend API calls
 
-### Best For
+### Best For (Demo Mode)
 
 - Frontend development
 - UI/UX testing
 - Documentation and demos
 - Contribution validation
 
-## Live Mode
+### Live Mode
 
-### Configuration
+### Configuration False
 
 ```env
 DEMO_MODE=false
@@ -58,14 +58,14 @@ API_URL=https://your-api-gateway-url.amazonaws.com/prod
 DEMO_KEY=your-provided-api-key
 ```
 
-### Purpose
+### Purpose (Live Mode)
 
 - Production usage with real data
 - Full AWS Bedrock AI capabilities
 - Actual Quickbase integration
 - Voice-to-text transcription
 
-### What Works
+### What Works (Live Mode)
 
 - Everything in Demo Mode, plus:
 - Real Bedrock AI agent responses
@@ -84,7 +84,7 @@ DEMO_KEY=your-provided-api-key
 - AWS services configured (Lambda, Bedrock, S3, etc.)
 - Quickbase credentials (backend-managed)
 
-### Best For
+### Best For (Live Mode)
 
 - Production deployments
 - Real data analysis

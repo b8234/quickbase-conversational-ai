@@ -8,7 +8,7 @@ Demo Mode allows you to explore and test the Quickbase Conversational AI interfa
 
 Set the following in your `.env` file:
 
-```
+```text
 DEMO_MODE=true
 ```
 

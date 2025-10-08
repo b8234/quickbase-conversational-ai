@@ -1,7 +1,11 @@
+
+import logging
 from typing import Dict, Any, List
 
 from src.config import ALLOW_LISTS, QB_APP_ID
 from src.table_relationships import get_table_metadata
+
+logger = logging.getLogger("quickbase-agent")
 
 def extract_bedrock_parameters(event: Dict[str, Any]) -> Dict[str, Any]:
     params = {'limit': 50, 'sort_order': 'DESC'}
@@ -52,7 +56,7 @@ def validate_and_match_tables(suggested_tables: List[str], app_id: str) -> Dict[
             table_id = entry["id"]
             table_info = get_table_metadata(table_id, app_id)
             matched.append(table_info)
-            print(f"INFO: Matched table '{table_info['name']}' ({table_info['id']})")
+            logger.info(f"Matched table '{table_info['name']}' ({table_info['id']})")
         else:
             matched_entry = None
             for name, data in ALLOW_LISTS.items():
@@ -60,11 +64,11 @@ def validate_and_match_tables(suggested_tables: List[str], app_id: str) -> Dict[
                     matched_entry = data
                     table_info = get_table_metadata(data["id"], app_id)
                     matched.append(table_info)
-                    print(f"INFO: Matched table '{name}' ({data['id']}) via case-insensitive match")
+                    logger.info(f"Matched table '{name}' ({data['id']}) via case-insensitive match")
                     break
             if not matched_entry:
                 available = list(ALLOW_LISTS.keys())
-                print(f"WARNING: Table '{suggested}' not found in ALLOW_LISTS")
+                logger.warning(f"Table '{suggested}' not found in ALLOW_LISTS")
                 
                 # Create a formatted list of available tables
                 table_list = "\n".join([f"- {table}" for table in available])

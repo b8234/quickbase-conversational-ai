@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# Stop the frontend Streamlit app
-./frontend/stop.sh
+# Stop the Streamlit app
+./streamlit/stop.sh
