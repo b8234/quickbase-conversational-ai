@@ -212,6 +212,13 @@ if st.session_state.voice_mode:
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
                     st.error("🚫 Unauthorized: Invalid or missing DEMO_KEY.")
+                elif e.response.status_code == 500:
+                    error_body = e.response.json() if e.response.headers.get('content-type') == 'application/json' else {}
+                    error_msg = error_body.get('error', str(e))
+                    if 'DEMO_KEY' in error_msg or 'misconfiguration' in error_msg.lower():
+                        st.error("⚙️ **Server Configuration Error:** DEMO_KEY is not configured in the Lambda function. Contact your administrator.")
+                    else:
+                        st.error(f"🔧 Server Error: {error_msg}")
                 else:
                     st.error(f"API Error: {e}")
             except Exception as e:
@@ -258,6 +265,16 @@ else:
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
                     placeholder.markdown("🚫 Unauthorized: Invalid or missing DEMO_KEY.")
+                elif e.response.status_code == 500:
+                    try:
+                        error_body = e.response.json() if e.response.headers.get('content-type') == 'application/json' else {}
+                        error_msg = error_body.get('error', str(e))
+                        if 'DEMO_KEY' in error_msg or 'misconfiguration' in error_msg.lower():
+                            placeholder.markdown("⚙️ **Server Configuration Error:** DEMO_KEY is not configured in the Lambda function. Contact your administrator.")
+                        else:
+                            placeholder.markdown(f"🔧 Server Error: {error_msg}")
+                    except:
+                        placeholder.markdown(f"🔧 Server Error: {e}")
                 else:
                     placeholder.markdown(f"API Error: {e}")
             except Exception as e:
