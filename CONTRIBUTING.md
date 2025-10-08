@@ -5,12 +5,14 @@ Thank you for your interest in contributing to this project! This is a showcase 
 ## How to Contribute
 
 ### Reporting Issues
+
 - Check existing issues before creating a new one
 - Provide clear reproduction steps
 - Include relevant logs and error messages
 - Specify your environment (OS, Python version, AWS region, etc.)
 
 ### Suggesting Enhancements
+
 - Describe the enhancement in detail
 - Explain the use case and benefits
 - Consider backward compatibility
@@ -20,17 +22,20 @@ Thank you for your interest in contributing to this project! This is a showcase 
 #### Development Setup
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/YOUR-USERNAME/quickbase-conversational-ai.git
    cd quickbase-conversational-ai
    ```
 
 2. **Create a Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. **Set Up Environment**
+
    ```bash
    # Copy example environment file
    cp example.env .env
@@ -41,6 +46,7 @@ Thank you for your interest in contributing to this project! This is a showcase 
    ```
 
 4. **Install Dependencies**
+
    ```bash
    # Install root dependencies
    pip install -r requirements.txt
@@ -64,6 +70,7 @@ Thank you for your interest in contributing to this project! This is a showcase 
    - Test backend locally with sample data from `backend/tests/fixtures/`
 
 8. **Commit and Push**
+
    ```bash
    git add .
    git commit -m "Brief description of your changes"
@@ -86,6 +93,7 @@ Thank you for your interest in contributing to this project! This is a showcase 
 ## Project Structure
 
 When adding new features, maintain the existing structure:
+
 - `backend/` - Quickbase API and data processing
 - `frontend/` - Streamlit UI
 - `lambda_frontend/` - AWS Lambda handler
@@ -94,6 +102,7 @@ When adding new features, maintain the existing structure:
 ## Testing
 
 While comprehensive tests aren't required for this showcase repository, please:
+
 - Manually test your changes
 - Verify no existing functionality breaks
 - Test with demo mode if possible

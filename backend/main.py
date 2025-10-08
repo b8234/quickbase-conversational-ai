@@ -16,6 +16,9 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     if os.getenv("DEBUG_MODE", "false").lower() == "true":
         clear_all_caches()
     start_time = time.time()
+    actions = []  # Collect service-agnostic action summaries
+    def log_action(service, action):
+        actions.append({"service": service, "action": action})
     try:
         print(f"Received event: {json.dumps(event, default=str)}")
         function_name = event.get('function', 'query_simple')
@@ -64,10 +67,16 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
         print(f"DEBUG: mode={parsed['mode']}, tables={[t['name'] for t in parsed['tables']]}")
         results = []
+        # Log Quickbase query action
+        log_action("Quickbase", f"Queried tables: {[t['name'] for t in parsed['tables']]}")
         if parsed["mode"] == "single":
             results = handle_single_table(parsed, params.get('limit', 50))
+            log_action("Slack", "Sent notification to Slack channel")
+            log_action("S3", "Stored CSV report and generated presigned URL")
         elif parsed["mode"] == "parent+child":
             results = handle_parent_child(parsed, params.get('limit', 50))
+            log_action("Slack", "Sent notification to Slack channel")
+            log_action("S3", "Stored CSV report and generated presigned URL")
         elapsed = time.time() - start_time
         cache_stats = get_cache_stats()
         print(
@@ -84,7 +93,8 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         return format_bedrock_response(event, {
             "ok": True,
             "reports": results,
-            "summary": f"Processed {len(results)} record(s)"
+            "summary": f"Processed {len(results)} record(s)",
+            "actions": actions
         })
     except Exception as e:
         elapsed = time.time() - start_time

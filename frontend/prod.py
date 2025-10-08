@@ -107,6 +107,13 @@ with st.sidebar:
         st.success("Chat history cleared.")
 
     st.divider()
+    
+    # --- Refresh variables button ---
+    if st.button("🔄 Refresh Variables"):
+        load_dotenv()
+        st.rerun()
+
+    st.divider()
     st.subheader("🎙️ Interaction Mode")
 
     mode_label = "Currently: Voice Mode" if st.session_state.voice_mode else "Currently: Text Mode"
@@ -190,8 +197,8 @@ if st.session_state.voice_mode:
                     encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
                     headers = {}
-                    if DEMO_KEY:
-                        headers["x-demo-key"] = DEMO_KEY
+                    # Always send x-demo-key header in live mode
+                    headers["x-demo-key"] = DEMO_KEY if DEMO_KEY else ""
 
                     res = requests.post(API_URL, json={
                         "audio_base64": encoded_audio,
@@ -205,9 +212,18 @@ if st.session_state.voice_mode:
                 url = data.get("url")
                 if url:
                     reply += f"\n\n[📎 Download CSV Here]({url})"
+                # Escape dollar signs to prevent Streamlit markdown issues
+                reply = reply.replace("$", "\\$")
 
                 st.chat_message("assistant").markdown(reply, unsafe_allow_html=True)
                 st.session_state.messages.append({"role": "assistant", "content": reply})
+
+                # Display AI transparency actions if present
+                actions = data.get("actions", [])
+                if actions:
+                    with st.expander("What happened behind the scenes?"):
+                        for act in actions:
+                            st.markdown(f"- **{act['service']}**: {act['action']}")
 
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
@@ -244,8 +260,8 @@ else:
                     data = {"reply": reply}
                 else:
                     headers = {}
-                    if DEMO_KEY:
-                        headers["x-demo-key"] = DEMO_KEY
+                    # Always send x-demo-key header in live mode
+                    headers["x-demo-key"] = DEMO_KEY if DEMO_KEY else ""
 
                     res = requests.post(API_URL, json={
                         "prompt": prompt,
@@ -258,9 +274,18 @@ else:
                 url = data.get("url")
                 if url:
                     reply += f"\n\n[📎 Download CSV Here]({url})"
+                # Escape dollar signs to prevent Streamlit markdown issues
+                reply = reply.replace("$", "\\$")
 
                 placeholder.markdown(reply, unsafe_allow_html=True)
                 st.session_state.messages.append({"role": "assistant", "content": reply})
+
+                # Display AI transparency actions if present
+                actions = data.get("actions", [])
+                if actions:
+                    with st.expander("What happened behind the scenes?"):
+                        for act in actions:
+                            st.markdown(f"- **{act['service']}**: {act['action']}")
 
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
