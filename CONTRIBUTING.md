@@ -32,11 +32,12 @@ Thank you for your interest in contributing to this project! This is a showcase 
 
 3. **Set Up Environment**
    ```bash
-   # Copy demo environment file
-   cp .env.demo .env
+   # Copy example environment file
+   cp example.env .env
    
-   # Edit .env with your actual credentials
-   # You'll need: Quickbase tokens, AWS credentials, API Gateway URL
+   # Edit .env with your values:
+   # - Set DEMO_MODE=true to test without AWS backend
+   # - Set DEMO_MODE=false and add API_URL for live mode
    ```
 
 4. **Install Dependencies**
