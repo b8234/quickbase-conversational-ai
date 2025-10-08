@@ -39,7 +39,7 @@ This project requires configuration before use:
    - Quickbase credentials (realm, user token, app ID)
    - AWS resources (S3 bucket, region, Bedrock agent ID)
    - Slack webhook (optional)
-   - API Gateway endpoint
+   - API endpoint (`API_URL`)
 
 2. **Field Allowlist**: Edit `backend/field_allowlist.py` to define:
    - Your Quickbase table names and IDs

@@ -5,9 +5,9 @@ from audio_recorder_streamlit import audio_recorder  # pip install audio-recorde
 
 # ---------- Environment ----------
 load_dotenv()
-API_GATEWAY_URL = os.getenv("API_GATEWAY_URL")
+API_URL = os.getenv("API_URL")
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
-DEMO_API_KEY = os.getenv("DEMO_API_KEY")
+DEMO_KEY = os.getenv("DEMO_KEY")
 
 st.set_page_config(
     page_title="Quickbase Conversational AI powered by Amazon Bedrock",
@@ -55,10 +55,10 @@ with st.sidebar:
     # --- Mode indicator ---
     if DEMO_MODE:
         st.warning("🚧 Demo Mode — responses are simulated locally.")
-    elif DEMO_API_KEY:
+    elif DEMO_KEY:
         st.info("🔒 Private Mode — Secure backend access enabled.")
     else:
-        st.error("⚠️ Unauthorized: DEMO_API_KEY missing. Lambda will reject calls.")
+        st.error("⚠️ Unauthorized: DEMO_KEY missing. Lambda will reject calls.")
 
     st.divider()
 
@@ -107,10 +107,10 @@ if st.session_state.voice_mode:
                     encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
                     headers = {}
-                    if DEMO_API_KEY:
-                        headers["x-demo-key"] = DEMO_API_KEY
+                    if DEMO_KEY:
+                        headers["x-demo-key"] = DEMO_KEY
 
-                    res = requests.post(API_GATEWAY_URL, json={
+                    res = requests.post(API_URL, json={
                         "audio_base64": encoded_audio,
                         "session_id": st.session_state.session_id,
                         "voice_mode": True
@@ -128,7 +128,7 @@ if st.session_state.voice_mode:
 
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
-                    st.error("🚫 Unauthorized: Invalid or missing DEMO_API_KEY.")
+                    st.error("🚫 Unauthorized: Invalid or missing DEMO_KEY.")
                 else:
                     st.error(f"API Error: {e}")
             except Exception as e:
@@ -150,10 +150,10 @@ else:
                     data = {"reply": "💬 Demo Mode: This is a simulated response for demonstration."}
                 else:
                     headers = {}
-                    if DEMO_API_KEY:
-                        headers["x-demo-key"] = DEMO_API_KEY
+                    if DEMO_KEY:
+                        headers["x-demo-key"] = DEMO_KEY
 
-                    res = requests.post(API_GATEWAY_URL, json={
+                    res = requests.post(API_URL, json={
                         "prompt": prompt,
                         "session_id": st.session_state.session_id
                     }, headers=headers)

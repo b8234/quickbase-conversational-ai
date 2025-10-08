@@ -54,8 +54,8 @@ DEMO_MODE=true
 
 ```env
 DEMO_MODE=false
-API_GATEWAY_URL=https://your-api-gateway-url.amazonaws.com/prod
-DEMO_API_KEY=your-provided-api-key
+API_URL=https://your-api-gateway-url.amazonaws.com/prod
+DEMO_KEY=your-provided-api-key
 ```
 
 ### Purpose
@@ -124,8 +124,8 @@ DEMO_MODE=true
 
 ```bash
 DEMO_MODE=false
-API_GATEWAY_URL=https://your-api-gateway-url.amazonaws.com/prod
-DEMO_API_KEY=your-provided-api-key
+API_URL=https://your-api-gateway-url.amazonaws.com/prod
+DEMO_KEY=your-provided-api-key
 ```
 
 No code changes required - the application automatically adapts based on the `DEMO_MODE` setting.
