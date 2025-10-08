@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Quickbase Query API",
+    "version": "1.0.0",
+    "description": "API for querying Quickbase data through conversational AI"
+  },
+  "paths": {
+    "/query": {
+      "post": {
+        "summary": "Query Quickbase records",
+        "description": "Retrieve records from Quickbase tables based on user query",
+        "operationId": "queryQuickbaseRecords",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "table_name": {
+                    "type": "string",
+                    "description": "Name of the Quickbase table to query"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "Filter criteria for the query"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of records to return",
+                    "default": 100
+                  },
+                  "export": {
+                    "type": "boolean",
+                    "description": "Whether to export results to CSV",
+                    "default": false
+                  }
+                },
+                "required": ["table_name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "export_url": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
