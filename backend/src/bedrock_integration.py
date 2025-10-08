@@ -69,11 +69,16 @@ def validate_and_match_tables(suggested_tables: List[str], app_id: str) -> Dict[
                 # Create a formatted list of available tables
                 table_list = "\n".join([f"- {table}" for table in available])
                 
+                # Check if this might be an entity/customer name instead of a table name
+                suggestion_msg = f"I couldn't find a table named '{suggested}'.\n\n"
+                suggestion_msg += f"Which table would you like to query?\n\n{table_list}\n\n"
+                suggestion_msg += f"(If '{suggested}' is a customer or record name, please specify which table to search in)"
+                
                 return {
                     "needs_clarification": True,
                     "error": f"Table '{suggested}' not found in ALLOW_LISTS",
                     "available_tables": available,
-                    "suggestion": f"Table '{suggested}' is not available. Please specify one of these tables:\n\n{table_list}"
+                    "suggestion": suggestion_msg
                 }
     mode = "parent+child" if len(matched) == 2 else "single"
     return {"ok": True, "tables": matched, "mode": mode}
