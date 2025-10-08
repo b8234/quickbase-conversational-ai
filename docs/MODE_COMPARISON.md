@@ -14,17 +14,20 @@
 ## Demo Mode
 
 ### Configuration
+
 ```env
 DEMO_MODE=true
 ```
 
 ### Purpose
+
 - Explore the UI without AWS infrastructure
 - Test frontend changes safely
 - Present the interface without sensitive data
 - Allow contributors to develop without credentials
 
 ### What Works
+
 - Complete Streamlit interface
 - All UI components and layouts
 - Text input fields
@@ -32,12 +35,14 @@ DEMO_MODE=true
 - Navigation and controls
 
 ### What's Mocked
+
 - Bedrock AI responses
 - Quickbase data queries
 - Voice transcription
 - Backend API calls
 
 ### Best For
+
 - Frontend development
 - UI/UX testing
 - Documentation and demos
@@ -46,6 +51,7 @@ DEMO_MODE=true
 ## Live Mode
 
 ### Configuration
+
 ```env
 DEMO_MODE=false
 API_GATEWAY_URL=https://your-api-gateway-url.amazonaws.com/prod
@@ -53,12 +59,14 @@ DEMO_API_KEY=your-provided-api-key
 ```
 
 ### Purpose
+
 - Production usage with real data
 - Full AWS Bedrock AI capabilities
 - Actual Quickbase integration
 - Voice-to-text transcription
 
 ### What Works
+
 - Everything in Demo Mode, plus:
 - Real Bedrock AI agent responses
 - Actual Quickbase API queries
@@ -69,6 +77,7 @@ DEMO_API_KEY=your-provided-api-key
 - CloudWatch logging
 
 ### Requirements
+
 - Deployed AWS infrastructure
 - Valid API Gateway endpoint
 - Authorized API key
@@ -76,6 +85,7 @@ DEMO_API_KEY=your-provided-api-key
 - Quickbase credentials (backend-managed)
 
 ### Best For
+
 - Production deployments
 - Real data analysis
 - End-user applications
@@ -83,14 +93,16 @@ DEMO_API_KEY=your-provided-api-key
 
 ## Choosing the Right Mode
 
-### Use Demo Mode When:
+### Use Demo Mode When
+
 - ✅ You're developing frontend features
 - ✅ You don't have AWS credentials
 - ✅ You want to test without costs
 - ✅ You're contributing to the project
 - ✅ You need to demo without sensitive data
 
-### Use Live Mode When:
+### Use Live Mode When
+
 - ✅ You need real Quickbase data
 - ✅ You have deployed AWS infrastructure
 - ✅ You've been provided an API key
@@ -102,12 +114,14 @@ DEMO_API_KEY=your-provided-api-key
 Switching modes is as simple as updating your `.env` file:
 
 **To Demo Mode:**
+
 ```bash
 DEMO_MODE=true
 # Comment out or remove Live Mode variables
 ```
 
 **To Live Mode:**
+
 ```bash
 DEMO_MODE=false
 API_GATEWAY_URL=https://your-api-gateway-url.amazonaws.com/prod

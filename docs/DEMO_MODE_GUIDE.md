@@ -15,6 +15,7 @@ DEMO_MODE=true
 ## Features in Demo Mode
 
 ### ✅ Available Features
+
 - **Full UI Access**: Complete Streamlit interface with all visual components
 - **Text Input**: Test the conversational interface with sample queries
 - **Voice Input**: UI controls available (actual transcription disabled)
@@ -22,6 +23,7 @@ DEMO_MODE=true
 - **Session Management**: Full session state and conversation history
 
 ### ❌ Limitations
+
 - **No AWS Integration**: Bedrock, Lambda, and Transcribe are not called
 - **No Real Data**: Responses use mock data, not actual Quickbase records
 - **No Voice Processing**: Transcription UI shown but not functional

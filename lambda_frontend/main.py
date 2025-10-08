@@ -17,7 +17,7 @@ def log(msg):
 
 # ---------- Environment ----------
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
-DEMO_KEY = os.getenv("DEMO_KEY")
+DEMO_API_KEY = os.getenv("DEMO_API_KEY")
 AGENT_ID = os.getenv("AGENT_ID")
 ALIAS_ID = os.getenv("ALIAS_ID")
 REGION = os.getenv("REGION", "us-east-1")
@@ -77,20 +77,20 @@ def lambda_handler(event, context):
         # --- Validate demo key ---
         received_key = headers.get("x-demo-key")
         if not DEMO_MODE:
-            if not DEMO_KEY:
-                log("Missing DEMO_KEY in environment")
+            if not DEMO_API_KEY:
+                log("Missing DEMO_API_KEY in environment")
                 return {
                     "statusCode": 500,
                     "headers": {"Access-Control-Allow-Origin": "*"},
-                    "body": json.dumps({"error": "Server misconfiguration: DEMO_KEY not set"})
+                    "body": json.dumps({"error": "Server misconfiguration: DEMO_API_KEY not set"})
                 }
 
-            if received_key != DEMO_KEY:
-                log("Unauthorized request: invalid or missing DEMO_KEY")
+            if received_key != DEMO_API_KEY:
+                log("Unauthorized request: invalid or missing DEMO_API_KEY")
                 return {
                     "statusCode": 403,
                     "headers": {"Access-Control-Allow-Origin": "*"},
-                    "body": json.dumps({"error": "Unauthorized: Invalid or missing DEMO_KEY"})
+                    "body": json.dumps({"error": "Unauthorized: Invalid or missing DEMO_API_KEY"})
                 }
 
         # --- DEMO MODE (no AWS cost) ---
