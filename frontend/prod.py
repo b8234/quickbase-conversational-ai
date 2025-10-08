@@ -9,6 +9,21 @@ API_URL = os.getenv("API_URL")
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
 DEMO_KEY = os.getenv("DEMO_KEY")
 
+# ---------- Validate Live Mode Configuration ----------
+def validate_live_mode_config():
+    """Validate that required configuration is present for live mode"""
+    if not DEMO_MODE:
+        errors = []
+        
+        if not API_URL or API_URL == "your-api-gateway-endpoint":
+            errors.append("❌ **API_URL** is not configured in .env file")
+        
+        if not DEMO_KEY or DEMO_KEY == "your-secret-key":
+            errors.append("❌ **DEMO_KEY** is not configured in .env file")
+        
+        return errors
+    return []
+
 # ---------- Load Demo Responses ----------
 def load_demo_responses():
     """Load mock responses from JSON file for demo mode"""
@@ -112,6 +127,27 @@ st.markdown("""
 <div class="app-header">Quickbase Conversational AI powered by Amazon Bedrock</div>
 <div class="app-subtitle">A modern conversational interface for your Bedrock Agent.</div>
 """, unsafe_allow_html=True)
+
+# ---------- Check Live Mode Configuration ----------
+config_errors = validate_live_mode_config()
+if config_errors:
+    st.error("### ⚠️ Configuration Error")
+    for error in config_errors:
+        st.markdown(error)
+    
+    st.info("""
+    ### 💡 To run in live mode:
+    
+    1. **Update your `.env` file** in the `frontend/` directory
+    2. **Set API_URL** to your API Gateway endpoint
+    3. **Set DEMO_KEY** to match your Lambda configuration
+    4. **Restart the app** after updating
+    
+    **OR**
+    
+    Switch to **Demo Mode** by setting `DEMO_MODE=true` in `.env`
+    """)
+    st.stop()
 
 # ---------- Demo Mode Banner ----------
 if DEMO_MODE:
