@@ -53,8 +53,9 @@ When in Demo Mode, try these example queries to see mock responses:
 To use real AWS services and Quickbase data:
 
 1. Set `DEMO_MODE=false` in your `.env` file
-2. Add `API_URL` (your deployed backend endpoint)
+2. Add `API_URL` (provided by system administrator)
 3. Add `DEMO_KEY` (provided by system administrator)
-4. Ensure AWS services are properly configured in the backend
+4. Add `API_KEY` (provided by system administrator)
+5. Ensure AWS services are properly configured in the backend
 
 See [MODE_COMPARISON.md](MODE_COMPARISON.md) for detailed differences between modes.
