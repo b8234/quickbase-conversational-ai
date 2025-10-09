@@ -245,7 +245,15 @@ else:
                     time.sleep(random.uniform(3.0, 4.0))
                     # Use smart demo response matching
                     reply = get_demo_response(prompt)
-                    data = {"reply": reply}
+                    # Always include mock actions for transparency in demo mode
+                    data = {
+                        "reply": reply,
+                        "actions": [
+                            {"service": "Quickbase", "action": "Queried table: Customers (demo)"},
+                            {"service": "S3", "action": "Stored file: report_demo.csv in bucket: demo-bucket"},
+                            {"service": "Slack", "action": "Sent message to #demo-reports"}
+                        ]
+                    }
                 else:
                     headers = {}
                     # Always send x-demo-key header in live mode
@@ -270,6 +278,7 @@ else:
 
                 placeholder.markdown(reply, unsafe_allow_html=True)
                 st.session_state.messages.append({"role": "assistant", "content": reply})
+
 
                 # Display AI transparency actions if present
                 actions = data.get("actions", [])
