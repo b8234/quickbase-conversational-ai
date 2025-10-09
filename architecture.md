@@ -1,8 +1,8 @@
-# Quickbase Conversational AI - Architecture
+# Quickbase Agent Orchestrator - Architecture
 
 ## Overview
 
-This document describes the architecture of the Quickbase Conversational AI system, which enables users to interact with Quickbase data using natural language queries through text or voice input. The system leverages AWS services including Lambda, Bedrock, Transcribe, and S3 to provide a scalable, serverless solution.
+This document describes the architecture of the Quickbase Agent Orchestrator system, which enables users to interact with Quickbase data using natural language queries through text or voice input. The system leverages AWS services including Lambda, Bedrock, Transcribe, and S3 to provide a scalable, serverless solution.
 
 ## System Architecture Diagram
 
