@@ -50,7 +50,7 @@ def get_demo_response(query):
     return default.replace("{query}", query)
 
 st.set_page_config(
-    page_title="Quickbase Conversational AI powered by Amazon Bedrock",
+    page_title="Quickbase Agent Orchestrator",
     page_icon="🤖",
     layout="centered",
 )
@@ -132,8 +132,7 @@ with st.sidebar:
 
 # ---------- Header ----------
 st.markdown("""
-<div class="app-header">Quickbase Conversational AI powered by Amazon Bedrock</div>
-<div class="app-subtitle">A modern conversational interface for your Bedrock Agent.</div>
+<div class="app-header">Quickbase Agent Orchestrator powered by Amazon Bedrock</div>
 """, unsafe_allow_html=True)
 
 # ---------- Check Live Mode Configuration ----------
@@ -308,6 +307,6 @@ else:
 # ---------- Footer ----------
 st.markdown("""
 <div class="footer">
-    Built with Streamlit • Amazon Bedrock • AWS Lambda • API Gateway
+    Built with Streamlit • Amazon Bedrock Agent • AWS Lambda • API Gateway
 </div>
 """, unsafe_allow_html=True)
