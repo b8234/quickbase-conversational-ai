@@ -82,6 +82,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 "message": "Table validation failed",
                 "elapsed": elapsed
             }))
+            # Do not include actions in clarification response
             return format_bedrock_response(event, {
                 "ok": False,
                 "needs_clarification": True,
@@ -136,6 +137,9 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             {'MetricName': 'ExecutionTime', 'Value': elapsed, 'Unit': 'Seconds', 'Timestamp': datetime.utcnow()},
             {'MetricName': 'SuccessfulInvocations', 'Value': 1, 'Unit': 'Count', 'Timestamp': datetime.utcnow()}
         ])
+        # Guarantee 'actions' is always present in the response
+        if not actions:
+            actions = []
         return format_bedrock_response(event, {
             "ok": True,
             "reports": results,
@@ -150,4 +154,5 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             "trace": traceback.format_exc(),
             "message": "Exception occurred"
         }))
-        return format_bedrock_response(event, {"ok": False, "error": str(e)})
+    # Do not include actions in error response
+    return format_bedrock_response(event, {"ok": False, "error": str(e)})
