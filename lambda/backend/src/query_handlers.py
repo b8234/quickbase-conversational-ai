@@ -1,4 +1,4 @@
-import json
+import json, logging
 from typing import Dict, Any, List
 
 from src.quickbase_api import quickbase_query, load_field_map
@@ -14,6 +14,8 @@ from src.summary import generate_summary
 from src.exports import save_all_formats, save_to_s3
 from src.slack_utils import send_batched_slack_messages
 from src.record_retrieval import get_child_records
+
+logger = logging.getLogger("quickbase-agent")
 
 def handle_single_table(parsed: Dict[str, Any], limit: int) -> List[Dict[str, Any]]:
     """Process single table query."""
@@ -51,26 +53,26 @@ def handle_single_table(parsed: Dict[str, Any], limit: int) -> List[Dict[str, An
         if date_fid:
             date_clause = f"{{{date_fid}.OAF.'today-{value}{unit}'}}"
             where_clauses.append(date_clause)
-            print(f"DEBUG: Added date filter: {date_clause}")
+            logger.debug(f"Added date filter: {date_clause}")
         else:
-            print(f"WARNING: No date field in ALLOW_LIST for '{table['name']}'")
+            logger.warning(f"No date field in ALLOW_LIST for '{table['name']}'")
     if where_clauses:
         where_clause = "AND".join(where_clauses)
         body["where"] = where_clause
-        print(f"DEBUG: Query WHERE: {where_clause}")
+        logger.debug(f"Query WHERE: {where_clause}")
     if parsed.get("sort_by"):
         sort_field_id = get_sort_field_id(parsed["sort_by"], table["name"], field_map)
         if sort_field_id:
             sort_order = parsed.get("sort_order", "DESC")
             body["sortBy"] = [{"fieldId": sort_field_id, "order": sort_order}]
-            print(f"DEBUG: Sort by FID {sort_field_id} ({sort_order})")
+            logger.debug(f"Sort by FID {sort_field_id} ({sort_order})")
     select_fields = []
     for lbl in allow_list:
         clean_lbl = clean_field_name(lbl)
         if clean_lbl in field_map:
             select_fields.append(field_map[clean_lbl]["id"])
         else:
-            print(f"WARNING: Field '{clean_lbl}' not found in field_map for table '{table['name']}'")
+            logger.warning(f"Field '{clean_lbl}' not found in field_map for table '{table['name']}'")
     if "Record ID#" in field_map:
         rid_field_id = field_map["Record ID#"]["id"]
         if rid_field_id not in select_fields:
