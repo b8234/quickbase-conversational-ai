@@ -33,41 +33,19 @@ This project enables conversational access to Quickbase data using natural langu
 - `docs/` — Documentation
 - `architecture.md` — System diagram and design overview
 
-## Testing
-
-Test scaffolding is provided in:
-
-- `lambda/backend/tests/` — For backend unit and integration tests (add your own test files)
-- `frontend/tests/` — For frontend/Streamlit tests (add your own test files)
-
-Currently, only sample data and README files are present; you should add test scripts for automated validation.
-
-- `example.env` — Template for environment variables (copy to `.env` and configure)
-- `docs/` — Documentation
-- `architecture.md` — System diagram and design overview
-
 ## Configuration
 
 This project requires configuration before use:
 
-1. **Environment Variables**: Copy `example.env` to `.env` and configure:
-   - Quickbase credentials (realm, user token, app ID)
-   - AWS resources (S3 bucket, region, Bedrock agent ID)
-   - Slack webhook (optional)
-   - API endpoint (`API_URL`)
+1. **Environment Variables**: Copy `example.env` to `.env` in `streamlit/`
 
-2. **Field Allowlist**: Edit `backend/field_allowlist.py` to define:
-   - Your Quickbase table names and IDs
-   - Which fields users can query
-   - Field markers for search, date filtering, and relationships
-
-3. **Demo Mode**: Set `DEMO_MODE=true` in `.env` to test the frontend without AWS costs
+2. **Demo Mode**: Set `DEMO_MODE=true` in `.env` to test the frontend without AWS costs or `DEMO_MODE=false` which requires credentials from admin.
 
 See `architecture.md` for detailed component descriptions.
 
 ## Requirements
 
-To run this project, you will need access to the following resources:
+To run this project in your own account, you will need access to the following resources:
 
 - **AWS IAM**: Permissions for Lambda, Bedrock agent, S3, CloudWatch, API Gateway, and Amazon Transcribe
 - **Amazon Bedrock Agent**: For conversational AI responses
@@ -85,7 +63,7 @@ See `architecture.md` for a visual overview of how components interact.
 ## What's Included
 
 ✅ **Complete source code** for frontend, backend, and Lambda functions  
-✅ **Field allowlist system** for security and data control  
+✅ **Field allowlist system example** for security and data control  
 ✅ **Demo mode** for testing without AWS infrastructure  
 ✅ **Environment configuration templates**  
 
