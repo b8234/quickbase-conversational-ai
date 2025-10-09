@@ -106,3 +106,13 @@ See `architecture.md` for a visual overview of how components interact.
 ---
 
 For technical details and component descriptions, see `architecture.md`.
+
+## Accessing Streamlit in GitHub Codespaces
+
+If the browser does not auto-open, you can manually access the Streamlit app using:
+
+```url
+https://[your-codespace-name]-8501.app.github.dev/
+```
+
+Replace `[your-codespace-name]` with your actual Codespace name.
