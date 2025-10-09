@@ -8,6 +8,7 @@ load_dotenv()
 API_URL = os.getenv("API_URL")
 DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
 DEMO_KEY = os.getenv("DEMO_KEY")
+API_KEY = os.getenv("API_KEY")  # Add this to your .env file
 
 # ---------- Validate Live Mode Configuration ----------
 def validate_live_mode_config():
@@ -173,33 +174,26 @@ if st.session_state.voice_mode:
             st.info("Processing your voice input...")
             try:
                 if DEMO_MODE:
-                    # Simulate thinking time (3-4 seconds)
                     time.sleep(random.uniform(3.0, 4.0))
-                    
-                    # Simulate transcription with a random demo query
                     demo_queries = [
                         "Show me support tickets",
-                        "List customer records", 
+                        "List customer records",
                         "What are the open tasks?",
                         "Show projects and tasks",
                         "Get customers and invoices",
                         "Display orders and items"
                     ]
                     transcribed_text = random.choice(demo_queries)
-                    
-                    # Use smart demo response matching (same as text mode)
                     demo_response = get_demo_response(transcribed_text)
-                    
                     data = {
                         "reply": f"🎙️ **Voice Input Processed**\n\n_Transcribed:_ \"{transcribed_text}\"\n\n---\n\n{demo_response}"
                     }
                 else:
                     encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
-
                     headers = {}
-                    # Always send x-demo-key header in live mode
                     headers["x-demo-key"] = DEMO_KEY if DEMO_KEY else ""
-
+                    if API_KEY:
+                        headers["x-api-key"] = API_KEY
                     res = requests.post(API_URL, json={
                         "audio_base64": encoded_audio,
                         "session_id": st.session_state.session_id,
@@ -207,24 +201,18 @@ if st.session_state.voice_mode:
                     }, headers=headers)
                     res.raise_for_status()
                     data = res.json()
-
                 reply = data.get("reply", "No reply received.")
                 url = data.get("url")
                 if url:
                     reply += f"\n\n[📎 Download CSV Here]({url})"
-                # Escape dollar signs to prevent Streamlit markdown issues
                 reply = reply.replace("$", "\\$")
-
                 st.chat_message("assistant").markdown(reply, unsafe_allow_html=True)
                 st.session_state.messages.append({"role": "assistant", "content": reply})
-
-                # Display AI transparency actions if present
                 actions = data.get("actions", [])
                 if actions:
                     with st.expander("What happened behind the scenes?"):
                         for act in actions:
                             st.markdown(f"- **{act['service']}**: {act['action']}")
-
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
                     st.error("🚫 Unauthorized: Invalid or missing DEMO_KEY.")
@@ -262,6 +250,9 @@ else:
                     headers = {}
                     # Always send x-demo-key header in live mode
                     headers["x-demo-key"] = DEMO_KEY if DEMO_KEY else ""
+                    # Add API Gateway key if available
+                    if API_KEY:
+                        headers["x-api-key"] = API_KEY
 
                     res = requests.post(API_URL, json={
                         "prompt": prompt,
