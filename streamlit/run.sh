@@ -6,7 +6,7 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}🚀 Starting Quickbase Conversational AI...${NC}"
+echo -e "${BLUE}🚀 Starting Quickbase Agent Orchestrator...${NC}"
 
 # Navigate to frontend directory
 cd "$(dirname "$0")"
