@@ -1,6 +1,6 @@
-# Contributing to Quickbase Conversational AI
+# Contributing to Quickbase Agent Orchestrator
 
-Thank you for your interest in contributing to this project! This is a showcase repository demonstrating conversational AI integration with Quickbase.
+Thank you for your interest in contributing to this project! This is a showcase repository demonstrating agent orchestrator integration with Quickbase.
 
 ## How to Contribute
 
