@@ -1,6 +1,6 @@
 # Quickbase Agent Orchestrator
 
-> **Note**: This is a showcase repository demonstrating a conversational AI system for Quickbase. It provides complete frontend and backend code but does **not** include step-by-step deployment instructions. Use this as a reference implementation for building your own solution.
+> **Note**: This is a showcase repository demonstrating a agent orchestrator for Quickbase. It provides complete frontend and backend code but does **not** include step-by-step deployment instructions. Use this as a reference implementation for building your own solution.
 
 This project enables conversational access to Quickbase data using natural language, powered by Amazon Bedrock and AWS Lambda. It provides a user-friendly interface for querying, summarizing, and exporting Quickbase records, with support for both text and voice input.
 
