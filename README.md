@@ -1,4 +1,4 @@
-# Quickbase Conversational AI
+# Quickbase Agent Orchestrator
 
 > **Note**: This is a showcase repository demonstrating a conversational AI system for Quickbase. It provides complete frontend and backend code but does **not** include step-by-step deployment instructions. Use this as a reference implementation for building your own solution.
 
